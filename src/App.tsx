@@ -1,27 +1,38 @@
-import React from 'react';
+import React, { useCallback, useState } from 'react';
 import './App.scss';
-
-interface Props {
-  onClick: () => void;
-}
-
-export const Provider: React.FC<Props> = React.memo(
-  ({ onClick, children }) => (
-    <button
-      type="button"
-      onClick={onClick}
-    >
-      {children}
-    </button>
-  ),
-);
+import { Carousel } from './components/Carousel';
+import { Header } from './components/Header';
+import { Login } from './components/Login';
 
 export const App: React.FC = () => {
+  const [isLogin, setIsLogin] = useState(false);
+  const [userName, setUserName] = useState('');
+  const openModal = useCallback(() => {
+    setIsLogin(true);
+  }, []);
+  const closeModal = useCallback(() => {
+    setIsLogin(false);
+  }, []);
+
+  const loginUserName = useCallback((name) => {
+    setUserName(name);
+  },
+  []);
+
   return (
-    <div className="starter">
-      <Provider onClick={() => ({})}>
-        <TodoList />
-      </Provider>
+    <div className="container">
+      <Header
+        openModal={openModal}
+        userName={userName}
+      />
+      <Carousel />
+      {isLogin && (
+        <Login
+          isLogin={isLogin}
+          closeModal={closeModal}
+          loginUserName={loginUserName}
+        />
+      )}
     </div>
   );
 };
