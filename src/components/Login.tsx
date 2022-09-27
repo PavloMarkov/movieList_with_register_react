@@ -7,10 +7,14 @@ type Props = {
   closeModal: () => void;
   loginUserName: (name: string) => void;
   isSignUp: boolean;
+  isLogin: boolean;
+  resumeSignUp: () => void;
 };
 
 export const Login: React.FC<Props> = (props) => {
-  const { closeModal, loginUserName, isSignUp } = props;
+  const {
+    closeModal, loginUserName, isSignUp, isLogin, resumeSignUp,
+  } = props;
   const [userEmail, setUserEmail] = useState('');
   const [userPassword, setUserPassword] = useState('');
   const [userName, setUserName] = useState('');
@@ -20,6 +24,10 @@ export const Login: React.FC<Props> = (props) => {
   const isCorrectPassword = /^(?=.*\d)(?=.*[a-zA-Z])(?=.*[A-Z])(?=.*[-\#\$\.\%\&\*])(?=.*[a-zA-Z]).{6,18}$/.test(userPassword);
 
   const canLogin = isCorrectEmail && isCorrectPassword;
+
+  if (canLogin && userName) {
+    resumeSignUp();
+  }
 
   const style = {
     position: 'absolute',
@@ -38,7 +46,8 @@ export const Login: React.FC<Props> = (props) => {
       className="login"
     >
       <Modal
-        open
+        open={isLogin}
+        keepMounted
         onClose={closeModal}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
@@ -72,6 +81,7 @@ export const Login: React.FC<Props> = (props) => {
           <TextField
             sx={{ margin: '10px', width: '90%' }}
             error={!isCorrectPassword}
+            // id="outlined-error-helper-text"
             label="Password"
             type="password"
             value={userPassword}
@@ -93,12 +103,12 @@ export const Login: React.FC<Props> = (props) => {
                 loginUserName(userEmail);
               }
 
-              setUserEmail('');
-              setUserPassword('');
+              // setUserEmail('');
+              // setUserPassword('');
               closeModal();
             }}
           >
-            Login
+            {isSignUp ? 'Sign Up' : 'Login'}
           </Button>
         </Box>
       </Modal>

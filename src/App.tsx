@@ -9,13 +9,15 @@ import { Login } from './components/Login';
 export const App: React.FC = () => {
   const [isLogin, setIsLogin] = useState(false);
   const [isSignUp, setIsSignUp] = useState(false);
+  const [trySignUp, setTrySignUp] = useState(false);
   const [userName, setUserName] = useState('');
+
   const openModal = useCallback(() => {
     setIsLogin(true);
+    setIsSignUp(false);
   }, []);
   const closeModal = useCallback(() => {
     setIsLogin(false);
-    setIsSignUp(false);
   }, []);
 
   const loginUserName = useCallback((name) => {
@@ -29,21 +31,26 @@ export const App: React.FC = () => {
   },
   []);
 
+  const resumeSignUp = () => {
+    setTrySignUp(true);
+  };
+
   return (
     <Box className="container">
       <Header
         openModal={openModal}
         userName={userName}
         signUpUser={signUpUser}
+        trySignUp={trySignUp}
       />
       <Carousel />
-      {isLogin && (
-        <Login
-          closeModal={closeModal}
-          loginUserName={loginUserName}
-          isSignUp={isSignUp}
-        />
-      )}
+      <Login
+        closeModal={closeModal}
+        loginUserName={loginUserName}
+        isSignUp={isSignUp}
+        isLogin={isLogin}
+        resumeSignUp={resumeSignUp}
+      />
       <ListOfShows />
     </Box>
   );

@@ -5,10 +5,13 @@ type Props = {
   openModal: () => void;
   userName: string;
   signUpUser: () => void;
+  trySignUp: boolean;
 };
 
 export const Header: React.FC<Props> = (props) => {
-  const { openModal, userName, signUpUser } = props;
+  const {
+    openModal, userName, signUpUser, trySignUp,
+  } = props;
 
   return (
     <nav
@@ -24,7 +27,7 @@ export const Header: React.FC<Props> = (props) => {
               color="success"
               onClick={signUpUser}
             >
-              SIGN UP
+              {trySignUp ? 'RESUME SIGN UP' : 'SIGN UP'}
             </Button>
             <Button
               sx={{ m: 2 }}
