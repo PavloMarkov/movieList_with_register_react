@@ -1,5 +1,5 @@
 import { Button, Typography } from '@mui/material';
-import React from 'react';
+import React, { useState } from 'react';
 
 type Props = {
   openModal: () => void;
@@ -12,6 +12,12 @@ export const Header: React.FC<Props> = (props) => {
   const {
     openModal, userName, signUpUser, trySignUp,
   } = props;
+
+  const [isClickedBrowsBtn, setIsClickedBrowsBtn] = useState(false);
+
+  const hideBrowseBtn = () => {
+    setIsClickedBrowsBtn(true);
+  };
 
   return (
     <nav
@@ -38,13 +44,16 @@ export const Header: React.FC<Props> = (props) => {
             >
               SIGN IN
             </Button>
-            <Button
-              sx={{ m: 2 }}
-              variant="outlined"
-              size="large"
-            >
-              BROWSE
-            </Button>
+            {!isClickedBrowsBtn && (
+              <Button
+                sx={{ m: 2 }}
+                variant="outlined"
+                size="large"
+                onClick={hideBrowseBtn}
+              >
+                BROWSE
+              </Button>
+            )}
           </>
         )}
       </div>

@@ -11,6 +11,7 @@ export const App: React.FC = () => {
   const [isSignUp, setIsSignUp] = useState(false);
   const [trySignUp, setTrySignUp] = useState(false);
   const [userName, setUserName] = useState('');
+  const [isBrowse, setIsBrowse] = useState(true);
 
   const openModal = useCallback(() => {
     setIsLogin(true);
@@ -22,6 +23,7 @@ export const App: React.FC = () => {
 
   const loginUserName = useCallback((name) => {
     setUserName(name);
+    setIsBrowse(false);
   },
   []);
 
@@ -51,7 +53,7 @@ export const App: React.FC = () => {
         isLogin={isLogin}
         resumeSignUp={resumeSignUp}
       />
-      <ListOfShows />
+      <ListOfShows isBrowse={isBrowse} />
     </Box>
   );
 };
