@@ -4,19 +4,20 @@ import {
 import React, { useState } from 'react';
 
 type Props = {
-  isLogin: boolean;
   closeModal: () => void;
   loginUserName: (name: string) => void;
+  isSignUp: boolean;
 };
 
 export const Login: React.FC<Props> = (props) => {
-  const { isLogin, closeModal, loginUserName } = props;
+  const { closeModal, loginUserName, isSignUp } = props;
   const [userEmail, setUserEmail] = useState('');
   const [userPassword, setUserPassword] = useState('');
+  const [userName, setUserName] = useState('');
 
   const isCorrectEmail = /\S+@\S+\.\S+/.test(userEmail);
   // eslint-disable-next-line no-useless-escape
-  const isCorrectPassword = /^(?=.*\d)(?=.*[a-zA-Z])(?=.*[A-Z])(?=.*[-\#\$\.\%\&\*])(?=.*[a-zA-Z]).{6}$/.test(userPassword);
+  const isCorrectPassword = /^(?=.*\d)(?=.*[a-zA-Z])(?=.*[A-Z])(?=.*[-\#\$\.\%\&\*])(?=.*[a-zA-Z]).{6,18}$/.test(userPassword);
 
   const canLogin = isCorrectEmail && isCorrectPassword;
 
@@ -37,19 +38,30 @@ export const Login: React.FC<Props> = (props) => {
       className="login"
     >
       <Modal
-        open={isLogin}
+        open
         onClose={closeModal}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >
         <Box sx={style}>
           <Typography id="modal-modal-title" variant="h6" component="h2">
-            Login:
+            {isSignUp ? 'Sign Up' : 'Login:'}
           </Typography>
+          {isSignUp && (
+            <TextField
+              sx={{ margin: '10px', width: '90%' }}
+              error={userName === ''}
+              label="Name"
+              type="text"
+              value={userName}
+              onChange={(event) => setUserName(event.target.value)}
+              placeholder="Name"
+              helperText={userName !== '' ? 'Name is correct' : 'Enter your name'}
+            />
+          )}
           <TextField
             sx={{ margin: '10px', width: '90%' }}
             error={!isCorrectEmail}
-            id="outlined-error-helper-text"
             label="E-mail"
             type="email"
             value={userEmail}
@@ -60,13 +72,12 @@ export const Login: React.FC<Props> = (props) => {
           <TextField
             sx={{ margin: '10px', width: '90%' }}
             error={!isCorrectPassword}
-            id="outlined-error-helper-text"
             label="Password"
             type="password"
             value={userPassword}
             onChange={(event) => setUserPassword(event.target.value)}
             placeholder="Password"
-            helperText="6 chars: min 1 big letter, 1 number, 1 special"
+            helperText="min 6 chars: min 1 big letter, 1 number, 1 special"
           />
           <Button
             variant="contained"
@@ -74,9 +85,14 @@ export const Login: React.FC<Props> = (props) => {
             type="button"
             size="large"
             color="success"
-            sx={{ margin: '0 autu' }}
+            sx={{ margin: '0 auto' }}
             onClick={() => {
-              loginUserName(userEmail);
+              if (isSignUp) {
+                loginUserName(userName);
+              } else {
+                loginUserName(userEmail);
+              }
+
               setUserEmail('');
               setUserPassword('');
               closeModal();

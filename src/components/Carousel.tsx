@@ -3,7 +3,6 @@ import React, { useState } from 'react';
 import { useTheme } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import MobileStepper from '@mui/material/MobileStepper';
-import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import KeyboardArrowLeft from '@mui/icons-material/KeyboardArrowLeft';
 import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight';
@@ -35,7 +34,9 @@ export const Carousel: React.FC = () => {
       className="page"
     >
       <Box sx={{
-        maxWidth: '1080px',
+        maxWidth: {
+          sm: '60%',
+        },
         flexGrow: 1,
         padding: '0 20px',
       }}
@@ -47,43 +48,52 @@ export const Carousel: React.FC = () => {
           enableMouseEvents
         >
           {images.map((image, index) => (
-            <div
+            <Box
               key={image.label}
               style={{
-                position: 'relative',
+                display: 'flex',
+                justifyContent: 'center',
               }}
             >
               {Math.abs(activeStep - index) <= 2
                 ? (
-                  <div>
+                  <Box
+                    style={{
+                      position: 'relative',
+                    }}
+                  >
                     <Box
                       component="img"
                       sx={{
                         height: '100%',
                         display: 'block',
                         overflow: 'hidden',
-                        width: '100%',
+                        maxWidth: '100%',
                       }}
                       src={image.imgPath}
                       alt={image.label}
                     />
-                    <Typography
-                      variant="h5"
-                      style={{
+                    <Box
+                      component="div"
+                      sx={{
                         position: 'absolute',
-                        textAlign: 'center',
                         top: '50%',
                         left: '50%',
                         color: '#fff',
+                        fontSize: {
+                          sm: '16px',
+                          md: '40px',
+                        },
                         fontWeight: 'bold',
+                        textAlign: 'center',
                         transform: 'translate(-50%, -50%)',
                       }}
                     >
                       {image.label}
-                    </Typography>
-                  </div>
+                    </Box>
+                  </Box>
                 ) : null}
-            </div>
+            </Box>
           ))}
         </AutoPlaySwipeableViews>
         <MobileStepper
