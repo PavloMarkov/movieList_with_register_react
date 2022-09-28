@@ -24,8 +24,9 @@ export const Login: React.FC<Props> = (props) => {
   const isCorrectPassword = /^(?=.*\d)(?=.*[a-zA-Z])(?=.*[A-Z])(?=.*[-\#\$\.\%\&\*])(?=.*[a-zA-Z]).{6,18}$/.test(userPassword);
 
   const canLogin = isCorrectEmail && isCorrectPassword;
+  const canSignUp = canLogin && userName;
 
-  if (canLogin && userName) {
+  if (canSignUp) {
     resumeSignUp();
   }
 
@@ -81,7 +82,6 @@ export const Login: React.FC<Props> = (props) => {
           <TextField
             sx={{ margin: '10px', width: '90%' }}
             error={!isCorrectPassword}
-            // id="outlined-error-helper-text"
             label="Password"
             type="password"
             value={userPassword}
@@ -91,7 +91,7 @@ export const Login: React.FC<Props> = (props) => {
           />
           <Button
             variant="contained"
-            disabled={!canLogin}
+            disabled={isSignUp ? !canSignUp : !canLogin}
             type="button"
             size="large"
             color="success"
@@ -103,8 +103,6 @@ export const Login: React.FC<Props> = (props) => {
                 loginUserName(userEmail);
               }
 
-              // setUserEmail('');
-              // setUserPassword('');
               closeModal();
             }}
           >
